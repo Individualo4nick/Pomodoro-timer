@@ -24,12 +24,12 @@ public class StatisticsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         dataSource = new DataSource(this);
-        listView = (ListView) findViewById(R.id.listViewStatistics);
-        TextView emptyView = (TextView) findViewById(R.id.statistic_list_empty);
+        listView = findViewById(R.id.listViewStatistics);
+        TextView emptyView = findViewById(R.id.statistic_list_empty);
         listView.setEmptyView(emptyView);
 
         registerForContextMenu(listView);

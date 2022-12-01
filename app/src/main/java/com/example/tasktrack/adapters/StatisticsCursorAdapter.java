@@ -18,6 +18,7 @@ import com.example.tasktrack.models.StatisticLog;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -94,11 +95,9 @@ public class StatisticsCursorAdapter extends CursorAdapter implements View.OnCre
             taskName = (TextView) view.findViewById(R.id.tvTaskName);
             timeStamp = (TextView) view.findViewById(R.id.tvTimeStamp);
         }
-
         public void populateRow(StatisticLog statisticLog) {
             action.setText(statisticLog.getAction());
             taskName.setText(statisticLog.getTask().getName());
-
             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMANY);
             Date netDate = (new Date(statisticLog.getTime().getTime()));
             timeStamp.setText(sdf.format(netDate));
@@ -107,7 +106,6 @@ public class StatisticsCursorAdapter extends CursorAdapter implements View.OnCre
             long remainMinute = TimeUnit.SECONDS.toMinutes(statisticLog.getWorkTime()) - TimeUnit.HOURS.toMinutes(hours);
             String result = String.format("Работа: %sh %sm", String.format("%01d", hours), String.format("%01d", remainMinute));
             workTime.setText(result);
-
             DateFormat dateFormat = new SimpleDateFormat("mm:ss", Locale.GERMANY);
             netDate = (new Date(statisticLog.getBreakTime() * 1000));
             breakTime.setText(String.format("Перерыв: %sm", dateFormat.format(netDate)));

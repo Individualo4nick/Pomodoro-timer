@@ -24,6 +24,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.tasktrack.R;
@@ -201,12 +202,15 @@ public class TimerActivity extends AppCompatActivity implements TimerSelectionDi
         pomodoroTimer.setBreakTimerEvents(new PomodoroTimer.CountDownTimerEvent() {
             @Override
             public void onTick(long millisUntilFinished) {
+                task.setTimeDone(task.getTimeDone() + 1);
+                updateTask(task);
+
+                notifiyTimer("Task Tracker", "Время до начала работы: " + PomodoroTimer.getTimeString(millisUntilFinished), task.getId(), pomodoroTimer.getProgressBar().getProgress());
             }
 
             @Override
             public void onFinish() {
                 tvTimeSubtitle.setText(R.string.pomodoro_break_up);
-
                 setFABIcon(fabStartPause, R.drawable.ic_play_arrow_white_48dp);
                 if (vibrationEnabled) {
                     Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
@@ -231,6 +235,10 @@ public class TimerActivity extends AppCompatActivity implements TimerSelectionDi
 
             @Override
             public void onFinish() {
+                if (vibrationEnabled) {
+                    Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                    vibrator.vibrate(VIBRATE_DURATION);
+                }
                 task.setTimeDone(task.getTimeDone() + 1);
                 updateTask(task);
                 createStatisticLog("Work", "Время работы окончено.", 1000, 500);
@@ -244,10 +252,6 @@ public class TimerActivity extends AppCompatActivity implements TimerSelectionDi
                 }
 
                 setFABIcon(fabStartPause, R.drawable.ic_free_breakfast_white_48dp);
-                if (vibrationEnabled) {
-                    Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                    vibrator.vibrate(VIBRATE_DURATION);
-                }
                 status = TimerStatus.WAIT_FOR_BREAK;
             }
         });
@@ -464,7 +468,7 @@ public class TimerActivity extends AppCompatActivity implements TimerSelectionDi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             fab.setImageDrawable(getResources().getDrawable(resourceId, context.getTheme()));
         } else {
-            fab.setImageDrawable(getResources().getDrawable(resourceId));
+            fab.setImageDrawable(getResources().getDrawable(resourceId, context.getTheme()));
         }
     }
 

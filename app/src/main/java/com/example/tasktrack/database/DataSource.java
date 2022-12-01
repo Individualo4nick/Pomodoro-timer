@@ -256,7 +256,6 @@ public class DataSource {
                     task.setId(cursor.getLong(cursor.getColumnIndexOrThrow(StatisticLogEntry.COLUMN_NAME_TASK)));
                 }
             } catch (Exception e) {
-                // No Task set
             }
             statisticLog.setId(cursor.getLong(cursor.getColumnIndexOrThrow(StatisticLogEntry._ID)));
             statisticLog.setAction(cursor.getString(cursor.getColumnIndexOrThrow(StatisticLogEntry.COLUMN_NAME_ACTION)));
@@ -286,6 +285,7 @@ public class DataSource {
 
         if (cursor != null) {
             cursor.moveToFirst();
+            StatisticLog statisticLog = cursorToStatisticLog(cursor);
         }
 
         close();
